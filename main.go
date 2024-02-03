@@ -18,6 +18,21 @@ func main() {
 		panic(err)
 	}
 	defer client.Close()
+	var singerID int64
+	var firstName, lastName string
+	var singerInfo []byte
+
+	// ReadRow
+	row, err := client.Single().ReadRow(ctx, "Singers", spanner.Key{1}, []string{"FirstName", "LastName"})
+	if err != nil {
+		panic(err)
+	}
+	if err := row.Columns(&firstName, &lastName); err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s %s\n", firstName, lastName)
+
+	// Statement
 	stmt := spanner.Statement{SQL: "SELECT * FROM Singers"}
 	iter := client.Single().Query(ctx, stmt)
 	defer iter.Stop()
@@ -29,9 +44,6 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		var singerID int64
-		var firstName, lastName string
-		var singerInfo []byte
 		if err := row.Columns(&singerID, &firstName, &lastName, &singerInfo); err != nil {
 			panic(err)
 		}
