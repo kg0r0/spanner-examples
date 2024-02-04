@@ -18,9 +18,7 @@ func main() {
 		panic(err)
 	}
 	defer client.Close()
-	var singerID int64
 	var firstName, lastName string
-	var singerInfo []byte
 
 	// ReadRow
 	row, err := client.Single().ReadRow(ctx, "Singers", spanner.Key{1}, []string{"FirstName", "LastName"})
@@ -33,7 +31,7 @@ func main() {
 	fmt.Printf("%s %s\n", firstName, lastName)
 
 	// Statement
-	stmt := spanner.Statement{SQL: "SELECT * FROM Singers"}
+	stmt := spanner.Statement{SQL: "SELECT FirstName, LastName FROM Singers WHERE SingerId = 1"}
 	iter := client.Single().Query(ctx, stmt)
 	defer iter.Stop()
 	for {
@@ -44,9 +42,9 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		if err := row.Columns(&singerID, &firstName, &lastName, &singerInfo); err != nil {
+		if err := row.Columns(&firstName, &lastName); err != nil {
 			panic(err)
 		}
-		fmt.Printf("%d %s %s\n", singerID, firstName, lastName)
+		fmt.Printf("%s %s\n", firstName, lastName)
 	}
 }
