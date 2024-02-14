@@ -2,49 +2,55 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
+	"io"
 	"os"
+	"time"
 
 	"cloud.google.com/go/spanner"
-	"google.golang.org/api/iterator"
+	"github.com/kg0r0/spanner-examples/cmd"
 )
 
-func main() {
-	projectid := os.Getenv("GCLOUD_PROJECT")
-	db := fmt.Sprintf("projects/%s/instances/test/databases/test", projectid)
-	ctx := context.Background()
+type command func(ctx context.Context, w io.Writer, client *spanner.Client) error
+
+var (
+	commands = map[string]command{
+		"readrow": cmd.ReadRow,
+		"query":   cmd.Query,
+	}
+)
+
+func run(ctx context.Context, w io.Writer, cmd string, db string, arg string) error {
 	client, err := spanner.NewClient(ctx, db)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer client.Close()
-	var firstName, lastName string
 
-	// ReadRow
-	row, err := client.Single().ReadRow(ctx, "Singers", spanner.Key{1}, []string{"FirstName", "LastName"})
+	cmdfunc := commands[cmd]
+	if cmdfunc == nil {
+		flag.Usage()
+		os.Exit(2)
+	}
+	err = cmdfunc(ctx, w, client)
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(w, "%s failed with %v", cmd, err)
 	}
-	if err := row.Columns(&firstName, &lastName); err != nil {
-		panic(err)
-	}
-	fmt.Printf("%s %s\n", firstName, lastName)
+	return err
+}
 
-	// Statement
-	stmt := spanner.Statement{SQL: "SELECT FirstName, LastName FROM Singers WHERE SingerId = 1"}
-	iter := client.Single().Query(ctx, stmt)
-	defer iter.Stop()
-	for {
-		row, err := iter.Next()
-		if err == iterator.Done {
-			return
-		}
-		if err != nil {
-			panic(err)
-		}
-		if err := row.Columns(&firstName, &lastName); err != nil {
-			panic(err)
-		}
-		fmt.Printf("%s %s\n", firstName, lastName)
+func main() {
+	flag.Parse()
+	if len(flag.Args()) < 2 || len(flag.Args()) > 3 {
+		flag.Usage()
+		os.Exit(2)
+	}
+
+	cmd, db, arg := flag.Arg(0), flag.Arg(1), flag.Arg(2)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+	if err := run(ctx, os.Stdout, cmd, db, arg); err != nil {
+		os.Exit(1)
 	}
 }

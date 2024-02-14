@@ -1,7 +1,8 @@
 # spanner-examples
 
 ```
-export GCLOUD_PROJECT=[MY_PROJECT_ID]
+e.g.)
+$  go run main.go readrow "projects/[PROJECT_ID]/instances/[INSTANCE_NAME]/databases/[TABLE_NAME]"
 ```
 
 ## References
