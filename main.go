@@ -16,9 +16,10 @@ type command func(ctx context.Context, w io.Writer, client *spanner.Client) erro
 
 var (
 	commands = map[string]command{
-		"readrow":     cmd.ReadRow,
-		"query":       cmd.Query,
-		"batchupdate": cmd.BatchUpdate,
+		"readrow":         cmd.ReadRow,
+		"query":           cmd.Query,
+		"batchupdate":     cmd.BatchUpdate,
+		"transactiontags": cmd.ReadWriteTransactionWithTag,
 	}
 )
 
