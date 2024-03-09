@@ -21,10 +21,10 @@ func Query(ctx context.Context, w io.Writer, client *spanner.Client) error {
 			return nil
 		}
 		if err != nil {
-			panic(err)
+			return err
 		}
 		if err := row.Columns(&firstName, &lastName); err != nil {
-			panic(err)
+			return err
 		}
 		fmt.Fprintf(w, "%s %s\n", firstName, lastName)
 	}
