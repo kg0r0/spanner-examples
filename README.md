@@ -11,3 +11,4 @@ $  go run main.go readrow "projects/[PROJECT_ID]/instances/[INSTANCE_NAME]/datab
 - https://github.com/GoogleCloudPlatform/golang-samples/blob/main/functions/spanner/spanner.go
 - https://github.com/GoogleCloudPlatform/golang-samples/tree/main/spanner/spanner_snippets
 - https://cloud.google.com/spanner/docs/getting-started/go?hl=ja
+- https://cloud.google.com/spanner/docs/emulator#install-docker
