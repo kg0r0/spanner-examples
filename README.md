@@ -5,6 +5,17 @@ e.g.)
 $  go run main.go readrow "projects/[PROJECT_ID]/instances/[INSTANCE_NAME]/databases/[TABLE_NAME]"
 ```
 
+```
+$ docker-compose up -d 
+$ docker-compose exec spanner-cli spanner-cli -p test -i test -d test
+Connected.
+spanner>
+```
+
+```
+$ export SPANNER_EMULATOR_HOST=localhost:9011
+```
+
 ## References
 - https://pkg.go.dev/cloud.google.com/go/spanner#section-readme
 - https://pkg.go.dev/cloud.google.com/go/spanner#hdr-Single_Reads

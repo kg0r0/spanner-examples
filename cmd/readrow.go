@@ -10,7 +10,7 @@ import (
 
 func ReadRow(ctx context.Context, w io.Writer, client *spanner.Client) error {
 	var firstName, lastName string
-	row, err := client.Single().ReadRow(ctx, "Singers", spanner.Key{1}, []string{"FirstName", "LastName"})
+	row, err := client.Single().ReadRow(ctx, "Singers", spanner.Key{12}, []string{"FirstName", "LastName"})
 	if err != nil {
 		return err
 	}
