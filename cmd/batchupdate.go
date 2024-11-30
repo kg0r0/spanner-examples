@@ -8,7 +8,7 @@ import (
 	"cloud.google.com/go/spanner"
 )
 
-func BatchUpdate(ctx context.Context, w io.Writer, client *spanner.Client) error {
+func BatchUpdate(ctx context.Context, w io.Writer, client *spanner.Client, _ []string) error {
 	insertSQL := `INSERT INTO Singers (SingerId, FirstName, LastName) 
 	VALUES (@p1, @p2, @p3)`
 	stmts := []spanner.Statement{

@@ -1,9 +1,13 @@
 # spanner-examples
 
+It can be executed as a command as follows:
+
 ```
 e.g.)
-$  go run main.go readrow "projects/[PROJECT_ID]/instances/[INSTANCE_NAME]/databases/[TABLE_NAME]"
+$  go run main.go readrow
 ```
+
+Instances can be configured using a local emulator as follows:
 
 ```
 $ docker-compose up -d 
@@ -11,6 +15,8 @@ $ docker-compose exec spanner-cli spanner-cli -p test -i test -d test
 Connected.
 spanner>
 ```
+
+It is running on port 9011 to avoid duplicating the default port. Therefore, the connection can be made by setting the environment variable as follows:
 
 ```
 $ export SPANNER_EMULATOR_HOST=localhost:9011

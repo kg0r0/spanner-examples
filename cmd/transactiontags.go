@@ -9,7 +9,7 @@ import (
 )
 
 // Ref: https://cloud.google.com/spanner/docs/introspection/troubleshooting-with-tags#transaction_tags
-func ReadWriteTransactionWithTag(ctx context.Context, w io.Writer, client *spanner.Client) error {
+func ReadWriteTransactionWithTag(ctx context.Context, w io.Writer, client *spanner.Client, _ []string) error {
 	_, err := client.ReadWriteTransactionWithOptions(ctx, func(ctx context.Context, txn *spanner.ReadWriteTransaction) error {
 		stmt := spanner.Statement{
 			SQL: `UPDATE Venues SET Capacity = CAST(Capacity/4 AS INT64) WHERE OutdoorVenue = false`,

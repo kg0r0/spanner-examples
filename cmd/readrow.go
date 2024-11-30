@@ -8,7 +8,7 @@ import (
 	"cloud.google.com/go/spanner"
 )
 
-func ReadRow(ctx context.Context, w io.Writer, client *spanner.Client) error {
+func ReadRow(ctx context.Context, w io.Writer, client *spanner.Client, _ []string) error {
 	var firstName, lastName string
 	row, err := client.Single().ReadRow(ctx, "Singers", spanner.Key{12}, []string{"FirstName", "LastName"})
 	if err != nil {

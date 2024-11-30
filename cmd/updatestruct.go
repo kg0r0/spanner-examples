@@ -9,7 +9,7 @@ import (
 )
 
 // Ref: https://github.com/googleapis/google-cloud-go/blob/main/spanner/examples_test.go#L164
-func UpdateStruct(ctx context.Context, w io.Writer, client *spanner.Client) error {
+func UpdateStruct(ctx context.Context, w io.Writer, client *spanner.Client, _ []string) error {
 	_, err := client.ReadWriteTransaction(ctx, func(ctx context.Context, txn *spanner.ReadWriteTransaction) error {
 		m, err := spanner.UpdateStruct("Singers", &models.Singers{
 			SingerId:  12,

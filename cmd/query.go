@@ -9,7 +9,7 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func Query(ctx context.Context, w io.Writer, client *spanner.Client) error {
+func Query(ctx context.Context, w io.Writer, client *spanner.Client, _ []string) error {
 	var firstName, lastName string
 
 	stmt := spanner.Statement{SQL: "SELECT FirstName, LastName FROM Singers WHERE SingerId = 1"}
@@ -31,7 +31,7 @@ func Query(ctx context.Context, w io.Writer, client *spanner.Client) error {
 }
 
 // Ref: https://pkg.go.dev/cloud.google.com/go/spanner@v1.55.0#RowIterator.Do
-func QueryRowIteratorDo(ctx context.Context, w io.Writer, client *spanner.Client) error {
+func QueryRowIteratorDo(ctx context.Context, w io.Writer, client *spanner.Client, _ []string) error {
 	var firstName, lastName string
 
 	stmt := spanner.Statement{SQL: "SELECT FirstName, LastName FROM Singers WHERE SingerId = 1"}
